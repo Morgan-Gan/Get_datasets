@@ -3,7 +3,7 @@ import shutil
 import glob
 # import cv2
 
-# ############################################## 按顺序间隔n帧读取图片保存图片  ################################################
+# ############################################## 1. 按顺序间隔n帧读取图片保存图片  ################################################
 # path = '../../../datasets/jingdianmao/2021-02-05imgs/20210205165632108'
 # new_path = '../../../datasets/jingdianmao/2021-02-05imgs_new'
 
@@ -23,7 +23,7 @@ import glob
   
 
 
-#################################################  按非空标签保存对应标签和图片  ####################################################################
+################################################# 2.  按非空标签保存对应标签和图片  ####################################################################
   
 
 # path = '/home/window_share/home/os/window_share/likeliang/deep_learning_code/detection/pingtai_centernet/jingdianmao/jingdianmao_mao'
@@ -64,7 +64,7 @@ import glob
 
 
 
-#################################################  按比例划分数据集和验证集  ####################################################################
+################################################# 3. 按比例划分数据集和验证集  ####################################################################
 # path = '../../datasets/jingdianmao/20210205jingdianmao_tou'
 # output_path = '../../datasets/jingdianmao/val_tou'
 
@@ -84,7 +84,7 @@ import glob
 #       shutil.move(file_path, new_file_path)
 
 
-#################################################  删除无标签对应的图片  ####################################################################
+#################################################  4. 删除无标签对应的图片  ####################################################################
   
 
 # imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/waibao_datasets/20210205jingdianmao_no_mao'
@@ -102,7 +102,7 @@ import glob
          
 
 
-#################################################  记录删除越界标签对应的图片  ####################################################################
+#################################################  5. 记录删除越界标签对应的图片  ####################################################################
   
 
 # imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/test_images'
@@ -172,20 +172,61 @@ import glob
   
 
 
-#################################################  更改文件夹中文件的名字  ####################################################################
+#################################################  6. 更改文件夹中文件的名字  ####################################################################
 
-imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/20210205jingdianmao_val'
+# imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/20210205jingdianmao_val'
+
+# for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
+#     # str1 = str(files)  "2021020515270881_5551tensor(0.83910, device='cuda:0').jpg"
+#     #                     '2021020515270881_5551(0.83910.jpg'
+#     for str0 in files:
+#       print(str0)
+#       if str0.endswith("='cuda:0').jpg"):
+#         label_file = root + '/' + str0
+#         img_file = label_file.replace('tensor(0.', '0'). \
+#                   replace(", device='cuda:0')", "")                # replace(".txt", ".JPG").
+#         os.rename(label_file, img_file)
+#         print(img_file)
+      
+    
+
+
+#################################################  7. 按图片取对应标签  ####################################################################
+  
+
+imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/20210205jingdianmao_val_old'
+old_labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/20210205jingdianmao_2cls/labels'
+labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/test_labels'
+
+# 按非空标签保存对应标签和图片
+# dirs_list = os.listdir( imgs_path )
+for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
+    # str1 = str(files)
+    for str0 in files:
+      # find_file = imgs_path + '/' + str0.replace(".jpg", ".txt").replace(".JPG", ".txt")
+      find_file = str0.replace(".jpg", ".txt").replace(".JPG", ".txt")
+      # if os.path.exists(find_file):
+      print(str0)
+      new_label_path = labels_path + '/' + find_file
+      shutil.copy(old_labels_path + '/' + find_file,  new_label_path)
+
+
+
+
+
+################################################  8. 更改文件夹中文件的名字  ####################################################################
+
+imgs_path = '/home/window_share/home/os/window_share/common2/AI_Server/test_tool/jingdianmao/JPEGImages'
 
 for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
     # str1 = str(files)  "2021020515270881_5551tensor(0.83910, device='cuda:0').jpg"
     #                     '2021020515270881_5551(0.83910.jpg'
     for str0 in files:
+      print(str0)
       if str0.endswith("='cuda:0').jpg"):
         label_file = root + '/' + str0
         img_file = label_file.replace('tensor(0.', '0'). \
                   replace(", device='cuda:0')", "")                # replace(".txt", ".JPG").
-        os.rename(label_file, img_file)
+        # os.rename(label_file, img_file)
+        # shutil.copy(old_labels_path + '/' + find_file,  new_label_path)
         print(img_file)
-      
-    
-              
