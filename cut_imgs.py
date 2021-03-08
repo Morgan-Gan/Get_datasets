@@ -1,11 +1,12 @@
 import os
 import shutil
 import glob
-# import cv2
+import cv2
 
 # ############################################## 1. 按顺序间隔n帧读取图片保存图片  ################################################
-# path = '../../../datasets/jingdianmao/2021-02-05imgs/20210205165632108'
-# new_path = '../../../datasets/jingdianmao/2021-02-05imgs_new'
+# path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person'
+# new_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person_new'
+# os.makedirs(new_path, exist_ok=True)
 
 # # 按顺序间隔n帧读取图片保存图片
 # dirs_list = os.listdir( path )
@@ -13,12 +14,13 @@ import glob
 # for root,dirs,files in os.walk(path): #提取文件夹下所有jpg文件复制转移到新的文件夹
 #   files.sort(key=lambda x:int(x[:-4]))
 # # for root,dirs,files in dirs_list: #提取文件夹下所有jpg文件复制转移到新的文件夹
-#   video_name = root.split('/')[6]
-#   for i in range(0,len(files),30):
+#   # video_name = root.split('/')[6]
+#   for i in range(0,len(files),8):
 #     # if files[i][-3:] == 'jpg' or files[i][-3:] == 'JPG':
 #       print(i)
 #       file_path = root + '/' + files[i]
-#       new_file_path = new_path + '/' + video_name + '_'+ files[i]
+#       # new_file_path = new_path + '/' + video_name + '_'+ files[i]
+#       new_file_path = new_path + '/' + files[i]
 #       shutil.copy(file_path,new_file_path)
   
 
@@ -65,37 +67,38 @@ import glob
 
 
 ################################################# 3. 按比例划分数据集和验证集  ####################################################################
-# path = '../../datasets/jingdianmao/20210205jingdianmao_tou'
-# output_path = '../../datasets/jingdianmao/val_tou'
+path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/20210205cap_shoes_person/images'
+output_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/20210205cap_shoes_person/images_val'
+os.makedirs(output_path, exist_ok=True)
 
-# # 按顺序间隔n帧读取图片保存图片
-# dirs_list = os.listdir( path )
-# dirs_list.sort()
-# for root,dirs,files in os.walk(path): # root 为当前正在遍历文件夹地址，dirs为该文件夹目录名字，files为该文件夹所有的文件
-#   # files.sort(key=lambda x:int(x[:-4]))
-# # for root,dirs,files in dirs_list: #提取文件夹下所有jpg文件复制转移到新的文件夹
-#   # video_name = root.split('/')[6]
-#   for i in range(0,len(files),4):
-#     # if files[i][-3:] == 'jpg' or files[i][-3:] == 'JPG':
-#       print(i)
-#       file_path = path + '/' + files[i]
-#       new_file_path = output_path + '/' + files[i]
-#       # shutil.copy(file_path, new_file_path)
-#       shutil.move(file_path, new_file_path)
+# 按顺序间隔n帧读取图片保存图片
+dirs_list = os.listdir( path )
+dirs_list.sort()
+for root,dirs,files in os.walk(path): # root 为当前正在遍历文件夹地址，dirs为该文件夹目录名字，files为该文件夹所有的文件
+  files.sort(key=lambda x:int(x[:-10]))                        #.jpg -> -4
+# for root,dirs,files in dirs_list: #提取文件夹下所有jpg文件复制转移到新的文件夹
+  # video_name = root.split('/')[6]
+  for i in range(0,len(files),4):
+    # if files[i][-3:] == 'jpg' or files[i][-3:] == 'JPG':
+      print(i)
+      file_path = path + '/' + files[i]
+      new_file_path = output_path + '/' + files[i]
+      # shutil.copy(file_path, new_file_path)
+      shutil.move(file_path, new_file_path)
 
 
 #################################################  4. 删除无标签对应的图片  ####################################################################
   
 
-# imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/waibao_datasets/20210205jingdianmao_no_mao'
-# labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/waibao_datasets/20210205jingdianmao_no_mao_labels/labels'
+# imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/2021-03-01imgs_ele_cap'
+# labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/20210301ele_cap_labels'
 
 # # 按非空标签保存对应标签和图片
 # dirs_list = os.listdir( imgs_path )
 # for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
 #     # str1 = str(files)
 #     for str0 in files:
-#       find_file = labels_path + '/' + str0.replace(".jpg", ".txt").replace(".JPG", ".txt")
+#       find_file = labels_path + '/' + str0.replace(".jpg", ".txt")           #.replace(".JPG", ".txt")
 #       if not os.path.exists(find_file):
 #          print(str0)
 #          os.remove(imgs_path + '/' + str0 )
@@ -194,21 +197,23 @@ import glob
 #################################################  7. 按图片取对应标签  ####################################################################
   
 
-imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/20210205jingdianmao_val_old'
-old_labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/20210205jingdianmao_2cls/labels'
-labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/test_labels'
+# imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person_should_out'
+# old_labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person_should_out/labels'
+# labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person_should_out/labels_new'
+# os.makedirs(labels_path, exist_ok=True)
 
-# 按非空标签保存对应标签和图片
-# dirs_list = os.listdir( imgs_path )
-for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
-    # str1 = str(files)
-    for str0 in files:
-      # find_file = imgs_path + '/' + str0.replace(".jpg", ".txt").replace(".JPG", ".txt")
-      find_file = str0.replace(".jpg", ".txt").replace(".JPG", ".txt")
-      # if os.path.exists(find_file):
-      print(str0)
-      new_label_path = labels_path + '/' + find_file
-      shutil.copy(old_labels_path + '/' + find_file,  new_label_path)
+# # 按非空标签保存对应标签和图片
+# # dirs_list = os.listdir( imgs_path )
+# for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
+#     # str1 = str(files)
+#     for str0 in files:
+#       if str0.endswith(".jpg"):
+#           # find_file = imgs_path + '/' + str0.replace(".jpg", ".txt").replace(".JPG", ".txt")
+#           find_file = str0.replace(".jpg", ".txt")
+#           # if os.path.exists(find_file):
+#           print(str0)
+#           new_label_path = labels_path + '/' + find_file
+#           shutil.copy(old_labels_path + '/' + find_file,  new_label_path)
 
 
 
@@ -216,17 +221,179 @@ for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复
 
 ################################################  8. 更改文件夹中文件的名字  ####################################################################
 
-imgs_path = '/home/window_share/home/os/window_share/common2/AI_Server/test_tool/jingdianmao/JPEGImages'
+# imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/20210205jingdianmao_2cls/labels'
 
-for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
-    # str1 = str(files)  "2021020515270881_5551tensor(0.83910, device='cuda:0').jpg"
-    #                     '2021020515270881_5551(0.83910.jpg'
-    for str0 in files:
-      print(str0)
-      if str0.endswith("='cuda:0').jpg"):
-        label_file = root + '/' + str0
-        img_file = label_file.replace('tensor(0.', '0'). \
-                  replace(", device='cuda:0')", "")                # replace(".txt", ".JPG").
-        # os.rename(label_file, img_file)
-        # shutil.copy(old_labels_path + '/' + find_file,  new_label_path)
-        print(img_file)
+# for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
+#     # str1 = str(files)  "2021020515270881_5551tensor(0.83910, device='cuda:0').jpg"
+#     #                     '2021020515270881_5551(0.83910.jpg'
+#     for str0 in files:
+#       # print(str0)
+#       if str0.endswith("='cuda:0').txt"):                          # .jpg
+#         label_file = root + '/' + str0
+#         img_file = label_file.replace('tensor(0.', '0'). \
+#                   replace(", device='cuda:0')", "")                # replace(".txt", ".JPG").
+#         os.rename(label_file, img_file)
+#         # shutil.copy(old_labels_path + '/' + find_file,  new_label_path)
+#         print(label_file)
+#         print(img_file)
+#       elif str0.endswith(".JPG"):
+#         label_file = root + '/' + str0
+#         img_file = label_file.replace('.JPG', '.jpg')
+#         os.rename(label_file, img_file)
+#         # shutil.copy(old_labels_path + '/' + find_file,  new_label_path)
+#         print(label_file)
+#         print(img_file)
+        
+
+
+# ################################################# 9.  根据标签列表取对应图片  ####################################################################
+  
+
+# txt_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap_protection_shoes_4cls/20210225ele_cap_protection_shoes_4cls_val.txt'
+# imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap_protection_shoes_4cls/images'
+# save_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap_protection_shoes_4cls/images_val'
+# os.makedirs(save_path, exist_ok=True)
+
+
+# with open(txt_path, "r") as f:
+
+#   if f.readlines(): 
+
+#     f.seek(0)
+#     all_data = f.read().split('\n')
+#     for str0 in all_data :
+#       split_data = str0.split('/')[-1]
+#       imgs_path1 = imgs_path + '/' + split_data
+#       imgs_new_path = save_path + '/' + split_data
+ 
+#       print(imgs_path1)
+#       shutil.copy(imgs_path1, imgs_new_path)
+
+# ################################################# 9.  根据标签列表取对应标签  ####################################################################
+  
+
+# txt_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap_protection_shoes_4cls/20210225ele_cap_protection_shoes_4cls_val.txt'
+# imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap_protection_shoes_4cls/labels'
+# save_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap_protection_shoes_4cls/labels_val'
+# os.makedirs(save_path, exist_ok=True)
+
+
+# with open(txt_path, "r") as f:
+
+#   if f.readlines(): 
+
+#     f.seek(0)
+#     all_data = f.read().split('\n')
+#     for str0 in all_data :
+#       split_data = str0.split('/')[-1].replace('.jpg', '.txt')
+#       imgs_path1 = imgs_path + '/' + split_data
+#       imgs_new_path = save_path + '/' + split_data
+ 
+#       print(imgs_path1)
+#       shutil.copy(imgs_path1, imgs_new_path)
+
+
+
+#################################################  10. 对比两个文件夹图片  ####################################################################
+  
+
+# imgs_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person_leg_out'
+# # old_labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/20210205jingdianmao_2cls/labels'
+# # labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/jingdianmao/test_labels'
+
+# # 按非空标签保存对应标签和图片
+# # dirs_list = os.listdir( imgs_path )
+# for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
+#     # str1 = str(files)
+#     for str0 in files:
+#       if str0.endswith(".jpg"):
+#         find_file = imgs_path.replace("cap_shoes_person_leg_out", "cap_shoes_person_should_out") + '/' + str0.replace("leg", "should")              #+ '/' + str0.replace("leg", "should")
+#         if not os.path.exists(find_file):
+#             print(imgs_path + '/' + str0)
+#         # new_label_path = labels_path + '/' + find_file
+#             os.remove(imgs_path + '/' + str0)                                     # shutil.rmtree删除文件夹
+#         # shutil.copy(imgs_path1, imgs_new_path)
+
+
+
+
+
+
+
+
+
+
+# ################################################# 11.  更改每个标签内容  ####################################################################
+  
+# labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person_leg_out/labels'
+# save_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person_leg_out/labels_new'
+# os.makedirs(save_path, exist_ok=True)
+
+
+# # 按非空标签保存对应标签和图片
+# for root,dirs,files in os.walk(labels_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
+#     # str1 = str(files)
+#     for str0 in files:
+#       if str0.endswith('.txt'):
+#           with open(root + '/' + str0, "r") as f:
+#             img_path = labels_path.replace("cap_shoes_person_leg_out/labels", "cap_shoes_person_should_out") + '/' + str0.replace('leg', 'should').replace('.txt', '.jpg')
+#             img = cv2.imread(img_path)
+#             h,w,_ = img.shape
+#             label_path = labels_path + '/'  + str0
+
+#             if f.readlines(): 
+#               new_label_path = save_path + '/' +str0
+#               shutil.copy(label_path, new_label_path)
+#               f_new = open(new_label_path, 'a+')             #r+
+#               print(str0)
+#               f_new.seek(0)
+#               all_data = f_new.read()
+#               split_data = all_data.split('\n')
+#               f_new.seek(0) 
+#               f_new.truncate()                      # 清空文件内容
+
+#               for i in range(len(split_data)-1):
+#                   a = split_data[i].split(' ')
+#                   print(a)
+#                   y1 = h + int(a[2])
+#                   y2 = h + int(a[4])
+#                   new_data = a[0] + ' ' + a[1] + ' ' + str(y1) +\
+#                                ' ' + a[3] + ' ' + str(y2) + '\n'
+#                   f_new.write(new_data)
+#               f_new.close()
+
+
+
+################################################# 11.  更改每个标签内容  ####################################################################
+  
+# labels_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person_leg_out/labels_new'
+# img_save_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/person_imgs'
+# os.makedirs(img_save_path, exist_ok=True)
+
+
+# # 按非空标签保存对应标签和图片
+# for root,dirs,files in os.walk(labels_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
+#     for str0 in files:
+#       if str0.endswith('.txt'):
+#           with open(root + '/' + str0, "r") as f:
+#             img_path = labels_path.replace("cap_shoes_person_leg_out/labels_new", "cap_shoes_person") + '/' + str0.replace('leg', '').replace('.txt', '.jpg')
+#             label_path = labels_path + '/'  + str0
+#             imgs_save_path = img_save_path + '/'  + str0.replace('leg.txt','person.jpg')
+#             shutil.copy(img_path, imgs_save_path)
+
+
+#             if f.readlines(): 
+#               new_label_path = label_path.replace("cap_shoes_person_leg_out/labels_new", "cap_shoes_person_should_out/labels").replace("leg", "should")
+#               f_new = open(new_label_path, 'a+')             #r+
+#               print(str0)
+#               f.seek(0)                             # read之前要seek定位
+#               all_data = f.read()
+#               split_data = all_data.split('\n')
+              
+
+#               for i in range(len(split_data)-1):
+#                   f_new.seek(0) 
+#                   new_data = split_data[i] + '\n'
+#                   f_new.write(new_data)
+#               f_new.close()
+#       os.rename(new_label_path, new_label_path.replace('should.txt', 'person.txt'))
