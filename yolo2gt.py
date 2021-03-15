@@ -1,15 +1,16 @@
 import  os
 import cv2
 
-yolo_txt = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/20210205cap_shoes_person/labels"
+yolo_txt = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/detection_result"
 
-output_path = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/20210205cap_shoes_person/nor_labels"
+output_path = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/norm_hand_labels"
 os.makedirs(output_path, exist_ok=True)
-image_path = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/20210205cap_shoes_person/images"
+image_path = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/JPEGImages_person"
 
 yolo_list = os.listdir(yolo_txt)
 
-class_name = ["person","ele_cap","protection_shoes", "shoes"]
+# class_name = ["person","ele_cap","protection_shoes", "shoes"]
+class_name = ["hand"]
 
 for txt in yolo_list:
     txt_path = os.path.join(yolo_txt,txt)
@@ -33,17 +34,25 @@ for txt in yolo_list:
         dw = 1. / w
         dh = 1. / h
         # name = class_name[int(content_list[0])]
-        name = int(content_list[0])
-        center_x = float(int(content_list[1]) + int(content_list[3]))*dw/2
-        center_y = float(int(content_list[2]) + int(content_list[4]))*dh/2
-        box_w = float(abs(int(content_list[3]) - int(content_list[1])))*dw/2
-        box_h = float(abs(int(content_list[4]) - int(content_list[2])))*dh/2
+
+        # ## xyxy -> yolo normal(xywh)
+        # name = int(content_list[0])
+        name = 1
+        # center_x = float(int(content_list[1]) + int(content_list[3]))*dw/2
+        # center_y = float(int(content_list[2]) + int(content_list[4]))*dh/2
+        # box_w = float(abs(int(content_list[3]) - int(content_list[1])))*dw
+        # box_h = float(abs(int(content_list[4]) - int(content_list[2])))*dh
+        center_x = float(int(content_list[3]) + int(content_list[5]))*dw/2
+        center_y = float(int(content_list[4]) + int(content_list[6]))*dh/2
+        box_w = float(abs(int(content_list[5]) - int(content_list[3])))*dw
+        box_h = float(abs(int(content_list[6]) - int(content_list[4])))*dh
+
         # top_x = float(int(content_list[1]))*w - float(int(content_list[3]))*w/2
         # top_y = float(int(content_list[2]))*h - float(int(content_list[4][:-3]))*h/2
         # bot_x = float(int(content_list[1]))*w + float(int(content_list[3]))*w/2
         # bot_y = float(int(content_list[2]))*h + float(int(content_list[4][:-3]))*h/2
 
-        ## yolo normal(xywh) -> xyxy
+        # yolo normal(xywh) -> xyxy
         # bbox_width = float(content_list[3]) * w
         # bbox_height = float(content_list[4]) * h
         # center_x = float(content_list[1]) * w
