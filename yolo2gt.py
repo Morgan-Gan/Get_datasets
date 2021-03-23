@@ -1,11 +1,11 @@
 import  os
 import cv2
 
-yolo_txt = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/detection_result"
+yolo_txt = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/20210305shoes/detection_result"
 
-output_path = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/norm_hand_labels"
+output_path = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/20210305shoes/norm_hand_labels"
 os.makedirs(output_path, exist_ok=True)
-image_path = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/JPEGImages_person"
+image_path = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/20210305shoes/JPEGImages"
 
 yolo_list = os.listdir(yolo_txt)
 
