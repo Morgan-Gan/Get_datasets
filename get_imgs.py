@@ -173,7 +173,7 @@ import os
 from urllib import parse
 from urllib import request
 from urllib.request import urlretrieve
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 import tkinter as tk
 # 定义一个gui界面显示
 # 显示图像框

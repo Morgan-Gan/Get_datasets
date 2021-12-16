@@ -59,11 +59,11 @@ def xml_txt(txt_path, image_path, path, labels):
 
 if __name__ == '__main__':
     # filespath = os.getcwd()
-    txt_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/20210305head_hand_foot/head_hand_foot/augment/labels_new'             # os.path.join(filespath, 'txt')  # yolo存放生成txt的文件目录
-    image_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/20210305head_hand_foot/head_hand_foot/augment/JPEGImages'                     #os.path.join(filespath, 'image')  # 存放图片的文件目录
-    path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/20210305head_hand_foot/head_hand_foot/augment/Annotations'          #os.path.join(filespath, 'xml')  # 存放xml的文件目录
+    txt_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap_protection_shoes_4cls/4cls/augment/labels'             # os.path.join(filespath, 'txt')  # yolo存放生成txt的文件目录
+    image_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap_protection_shoes_4cls/4cls/augment/JPEGImages'                     #os.path.join(filespath, 'image')  # 存放图片的文件目录
+    path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap_protection_shoes_4cls/4cls/augment/Annotations'          #os.path.join(filespath, 'xml')  # 存放xml的文件目录
 
-    labels = ['head', 'hand', 'foot']  # 用于获取label位置
+    labels = ['person', 'ele_cap', 'protection_shoes', 'shoes']  # 用于获取label位置
     xml_txt(txt_path, image_path, path, labels)
 
 

@@ -1,21 +1,29 @@
 import  os
 import cv2
 
-yolo_txt = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/20210305shoes/detection_result"
+yolo_txt = r"/home/os/window_share/ganhaiyang/Alg_Proj/Detect_Proj/yolov3/runs/detect/exp26/labels"
 
-output_path = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/20210305shoes/norm_hand_labels"
+output_path = r"/home/os/window_share/ganhaiyang/Alg_Proj/2.2.0_20201117_042200/QK_AI_Train_performance/test_tool/coco/norm_hand_labels"
 os.makedirs(output_path, exist_ok=True)
-image_path = r"/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/20210305shoes/JPEGImages"
+image_path = r"/home/os/window_share/ganhaiyang/Alg_Proj/Detect_Proj/yolov3/data/val/val_2017coco"
 
 yolo_list = os.listdir(yolo_txt)
 
 # class_name = ["person","ele_cap","protection_shoes", "shoes"]
-class_name = ["hand"]
+class_name = [ 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'trafficlight',
+        'firehydrant', 'stopsign', 'parkingmeter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow',
+        'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee',
+        'skis', 'snowboard', 'sportsball', 'kite', 'baseballbat', 'baseballglove', 'skateboard', 'surfboard',
+        'tennisracket', 'bottle', 'wineglass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
+        'sandwich', 'orange', 'broccoli', 'carrot', 'hotdog', 'pizza', 'donut', 'cake', 'chair', 'couch',
+        'pottedplant', 'bed', 'diningtable', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cellphone',
+        'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddybear',
+        'hairdrier', 'toothbrush' ]
 
 for txt in yolo_list:
     txt_path = os.path.join(yolo_txt,txt)
     output_txt_path = os.path.join(output_path,txt)
-    image_read_path = os.path.join(image_path,txt.split(".txt")[0]+".jpg")
+    image_read_path = os.path.join(image_path,txt.split(".txt")[0]+".jpg")  #.png
 
     read_handle = open(txt_path,"r")
     write_handle = open(output_txt_path,"w")
@@ -23,7 +31,7 @@ for txt in yolo_list:
     if os.path.exists(image_read_path):
         pass
     else:
-        image_read_path = image_read_path.replace(".jpg",".JPG")
+        image_read_path = image_read_path.replace(".jpg",".png")
     print(image_read_path)
     h,w,_ = cv2.imread(image_read_path).shape
     for content in read_handle:
