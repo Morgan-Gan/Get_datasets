@@ -24,6 +24,7 @@ def xml_txt(txt_path, path):
             # 对tree进行findall操作，可到带有指定标签节点（二级节点：filename, object)
             for item in root.findall('image'):
                 list_target = []
+                write_flag = True
                 # 提取label,并获取索引
                 img_name = item.attrib["name"]      # .attrib获取标签中的属性和属性值
                 print(img_name)
@@ -35,7 +36,10 @@ def xml_txt(txt_path, path):
                         # print(points)
 
                         dict02 = {}
-                        dict02['transcription'] = poly.find('attribute').text
+                        label = poly.find('attribute').text
+                        if label is None:
+                           write_flag = False
+                        dict02['transcription'] = label 
                         points = points.replace(',', ';').split(";")
                         list04 = []
                         for j in range(0, len(points), 2):
@@ -51,11 +55,12 @@ def xml_txt(txt_path, path):
                         # line += '{} {} {} {} {}'.format(label,center_x,center_y,bbox_width,bbox_height) + '\n'              
                 
                     # 将txt信息写入文件
-                    with open(ftxt_path, 'a') as f_txt:
-                        f_txt.write('20211201containers_train/' + img_name + '\t')
-                        f_txt.write(target_str + '\n')
-                    cnt += 1
-                    print('文件数量：', cnt)
+                    if write_flag:
+                        with open(ftxt_path, 'a') as f_txt:
+                            f_txt.write('20211201containers_train/' + img_name + '\t')
+                            f_txt.write(target_str + '\n')
+                        cnt += 1
+                        print('文件数量：', cnt)
                 else:
                     continue
         f_txt.close()
