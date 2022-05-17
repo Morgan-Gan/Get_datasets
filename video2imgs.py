@@ -2,78 +2,85 @@ import cv2
 import os
 import shutil
 
+# def save_img():
+#     video_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220419container_taicang/video/4'
+#     images_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220419container_taicang/images'
+#     os.makedirs(images_path, exist_ok=True)
+#     videos = os.listdir(video_path)
+#     count = 0
+#     for video_name in videos:
+#         file_name = video_name.split('.')[0]  #.split('_')[2]
+#         folder_name = images_path + '/' + file_name
+#         os.makedirs(folder_name, exist_ok=True)
+#         vc = cv2.VideoCapture(video_path+'/'+video_name)
+#         c=0
+#         timeF = 10                                            # 视频帧计数间隔频率30
+#         rval=vc.isOpened()
+
+#         while rval:
+#             c = c + 1                                              # 1
+#             rval, frame = vc.read()
+#             pic_path = folder_name+'/'
+#             if rval:
+#                 if(c % timeF ==0):                      # h    w
+#                     cropped = frame[217:1241, 281:2197] #[72:834, 7:1214]                                   # frame[0:1080, 0:1500] # 裁剪坐标为[y0:y1, x0:x1]
+#                     # cropped = frame[53:1003, 15:1919]                                    # frame[0:1080, 0:1500] # 裁剪坐标为[y0:y1, x0:x1]
+#                     img_name = pic_path + file_name + '_' +str(c) + '.jpg'
+#                     cv2.imwrite(img_name, cropped)   # .png
+#                     cv2.waitKey(1)
+#                     print("It is saving {} fps".format(c))
+#                     print("--------------> get {} fps imgs !",format(count))
+#                     count += 1
+#             else:
+#                 break
+
+#         vc.release()
+#         print('save_success')
+#         print(folder_name)
+# save_img()
+
+
+###########################################  间隔帧保存视频，并合并到一个文件夹中##############################################
+
 def save_img():
-    video_path = '/home/os/window_share/common2/dataset/cimc/containers_video/20211122/top'
-    images_path = '/home/os/window_share/common2/dataset/cimc/containers_imgs/20211122/top'
+    video_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/zhangzhou/video'
+    images_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/zhangzhou/images'
+    # video_path = '/home/os/window_share/common3/dataset/sunroof/video/sunroof20220419_video'
+    # images_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419'
     os.makedirs(images_path, exist_ok=True)
     videos = os.listdir(video_path)
     for video_name in videos:
-        file_name = video_name.split('.')[0]  #.split('_')[2]
-        folder_name = images_path + '/' + file_name
-        os.makedirs(folder_name, exist_ok=True)
+        file_name = video_name.split('_')[-1]#.split('_')[2]
+        file_name = file_name.split('.')[0]
+        # + '/'          # + file_name
         vc = cv2.VideoCapture(video_path+'/'+video_name)
-        c=0
-        timeF = 1                                            # 视频帧计数间隔频率30
-        rval=vc.isOpened()
+        c = 0
+        timeF = 10                                             # 视频帧计数间隔频率8
+        rval = vc.isOpened()
 
         while rval:
             c = c + 1                                              # 1
             rval, frame = vc.read()
-            pic_path = folder_name+'/'
+            # pic_path = folder_name+'/'
             if rval:
-                if(c % timeF ==0):
-                    cropped = frame#[0:1080, 0:1500] ,[72:834, 7:1214]                                   # frame[0:1080, 0:1500] # 裁剪坐标为[y0:y1, x0:x1]
-                    # cropped = frame[53:1003, 15:1919]                                    # frame[0:1080, 0:1500] # 裁剪坐标为[y0:y1, x0:x1]
-                    cv2.imwrite(pic_path + str(c) + '.jpg', cropped)   # .png
+                if(c % timeF == 0):
+                    # frame[0:1080, 0:1500] # 裁剪坐标为[y0:y1, x0:x1]
+                    cropped = frame[217:1397, 165:1829]
+                    # cropped = cv2.resize(cropped, (1920, 1080))
+                    cv2.imwrite(images_path + '/' + file_name +
+                                'zhangzhou20220505_' + str(c) + '.jpg', cropped)   # 按文件夹命名
+                    # cv2.imwrite(images_path + '/' + str(c) +      # 按帧数命名
+                    #             '.jpg', cropped)   # .png
                     cv2.waitKey(1)
                     print("It is saving {} fps".format(c))
             else:
                 break
         vc.release()
         print('save_success')
-        print(folder_name)
+        print(images_path)
+
+
 save_img()
-
-
-###########################################  间隔帧保存视频，并合并到一个文件夹中##############################################
-
-# def save_img():
-#     video_path = '/home/os/window_share/common3/dataset/ocr/cimc_20210804/video'
-#     images_path = '/home/os/window_share/common3/dataset/ocr/cimc_20210804/video2img_org'
-#     os.makedirs(images_path, exist_ok=True)
-#     videos = os.listdir(video_path)
-#     for video_name in videos:
-#         file_name = video_name.split('_')[-1]#.split('_')[2]
-#         file_name = file_name.split('.')[0]
-#         # + '/'          # + file_name
-#         vc = cv2.VideoCapture(video_path+'/'+video_name)
-#         c = 0
-#         timeF = 8                                             # 视频帧计数间隔频率8
-#         rval = vc.isOpened()
-
-#         while rval:
-#             c = c + 1                                              # 1
-#             rval, frame = vc.read()
-#             # pic_path = folder_name+'/'
-#             if rval:
-#                 if(c % timeF == 0):
-#                     # frame[0:1080, 0:1500] # 裁剪坐标为[y0:y1, x0:x1]
-#                     cropped = frame
-#                     # cropped = cv2.resize(cropped, (1920, 1080))
-#                     cv2.imwrite(images_path + '/' + file_name +
-#                                 '_' + str(c) + '.jpg', cropped)   # 按文件夹命名
-#                     # cv2.imwrite(images_path + '/' + str(c) +      # 按帧数命名
-#                     #             '.jpg', cropped)   # .png
-#                     cv2.waitKey(1)
-#                     print("It is saving {} fps".format(c))
-#             else:
-#                 break
-#         vc.release()
-#         print('save_success')
-#         print(images_path)
-
-
-# save_img()
 
 
 ###########################################3.1  合成视频##############################################

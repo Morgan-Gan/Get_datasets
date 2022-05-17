@@ -67,7 +67,7 @@ def getImg(dataList, localPath):
                 print('该图片链接不存在')
 
 if __name__ == '__main__':
-    dataList = getManyPages('静电帽', 5000)  # 参数1:关键字，参数2:要下载的页数     #监控视频  #办公区
+    dataList = getManyPages('监控视频', 5000)  # 参数1:关键字，参数2:要下载的页数     #监控视频  #办公区
 
     # getImg(dataList, 'E:\lishen\project\somecode\patu-python\knife\meigong')   # 参数2:指定保存的路径
-    getImg(dataList, '/home/os/window_share/ganhaiyang/Alg_Proj/Get_datasets/test1')   # 参数2:指定保存的路径
+    getImg(dataList, '/home/os/window_share/ganhaiyang/datasets/person')   # 参数2:指定保存的路径

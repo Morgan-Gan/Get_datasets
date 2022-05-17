@@ -5,12 +5,12 @@ import time
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor
 
-fromDir = '/home/window_share/home/os/window_share/ganhaiyang/datasets/head_hand_foot/20210314datasets5000/new_imgs'
+fromDir = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap_protection_shoes_4cls/20210225classifier_cap_shoes_4cls/4cls_imgs_train/3shoes/'
 
 count = 0
 small_count = 0
 threadPool = ThreadPoolExecutor(max_workers=10)
-min_size = 80                                                             # 100
+min_size = 30                                                             # 100
 
 def rmImage(file):
     os.remove(file)

@@ -1,0 +1,23 @@
+
+python getAlarmImg_caitu_0111.py -st 1646348434000 -et 1646389834000 -token e4b69dbb-29ca-45c6-b928-25f6b03a8c8b -at 3 -p 280 -ims 1
+
+python getAlarmImg_caitu_0111.py -st 1647593788000 -et 1649934625000 -token 97e2b1be-242b-4a14-a925-8c3147f4b1d4 -at 97 -p 329 -ims 1
+
+at代表告警类型，alarm_type（告警类型表）
+
+p代表项目ID  ----》329	总装车间-三现	重庆金康新能源汽车有限公司（项目信息表：注意车间匹配）
+
+ims：1代表监测记录  2代表告警图  啥都不写就是全导
+
+getAlarmImg_caitu_0111.py   ----》 导监测记录的脚本
+
+token ： 97e2b1be-242b-4a14-a925-8c3147f4b1d4  为金康公有云登录时密匙，F12查看
+
+st是开始时间，用网页换算，单位ms
+et是结束时间
+
+ori 1是原图，
+
+2是带框的图
+
+

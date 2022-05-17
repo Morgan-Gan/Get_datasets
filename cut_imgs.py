@@ -1,6 +1,7 @@
 import os
 import shutil
 import glob
+from tkinter import N
 import cv2
 
 ''' ===================== 目录 =====================================
@@ -24,26 +25,36 @@ import cv2
 18.  分类数据（无标签）数据增强
 19.  处理ava数据
 20. 四类标签改三类（ele_cap）
+21. dbnet标签按比例划分训练集合验证集
+22. 按比例取数据集（三级文件夹）
+23. 按比例取数据集（单文件夹）
+24. 按比例取数据集(单文件-分类)
+25. 按比例划分数据集和验证集(json Dbnet)
+26. 图像倒立转正
+27. 按图片保留取对应标签列表 
+28. 裁剪图片 
+29.  取文件夹中非空标签和图片（集团检测图像标注）
+30.  根据标签画图  
 '''
 # ############################################## 1. 按顺序间隔n帧读取图片保存图片  ################################################
-# path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person'
-# new_path = '/home/window_share/home/os/window_share/ganhaiyang/datasets/ele_cap/origin_video_imgs/cap_shoes_person_new'
+# path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/20220505container_xhzz'
+# new_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/20220505container_xhzz_choice'
 # os.makedirs(new_path, exist_ok=True)
 
 # # 按顺序间隔n帧读取图片保存图片
 # dirs_list = os.listdir( path )
 # dirs_list.sort()
 # for root,dirs,files in os.walk(path): #提取文件夹下所有jpg文件复制转移到新的文件夹
-#   files.sort(key=lambda x:int(x[:-4]))
+# #   files.sort(key=lambda x:int(x[:-4]))
 # # for root,dirs,files in dirs_list: #提取文件夹下所有jpg文件复制转移到新的文件夹
 #   # video_name = root.split('/')[6]
-#   for i in range(0,len(files),8):
+#   for i in range(0,len(files),2):
 #     # if files[i][-3:] == 'jpg' or files[i][-3:] == 'JPG':
 #       print(i)
 #       file_path = root + '/' + files[i]
 #       # new_file_path = new_path + '/' + video_name + '_'+ files[i]
 #       new_file_path = new_path + '/' + files[i]
-#       shutil.copy(file_path,new_file_path)
+#       shutil.move(file_path,new_file_path)
   
 
 
@@ -87,10 +98,10 @@ import cv2
 
 
 ################################################ 3. 按比例划分数据集和验证集  ####################################################################
-# path = '/home/os/window_share/common3/dataset/ocr/cimc/20211201containers/images'
-# output_path = '/home/os/window_share/common3/dataset/ocr/cimc/20211201containers/images_val'
-# # xml_path = '/home/os/window_share/common2/dataset/head_hand_foot/20210826head_hand_foot_enjie/Annotations_val'
-# txt_path = '/home/os/window_share/common3/dataset/ocr/cimc/20211201containers/labels_val'
+# path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/images'
+# output_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/images_val'
+# # xml_path = '/home/os/window_share/common3/dataset/car_window/car_window20220301/Annotations_val'
+# txt_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/labels_val'
 # os.makedirs(output_path, exist_ok=True)
 # # os.makedirs(xml_path, exist_ok=True)
 # os.makedirs(txt_path, exist_ok=True)
@@ -110,17 +121,17 @@ import cv2
 #     #   shutil.copy(file_path, new_file_path)
 #       shutil.move(file_path, new_file_path)
 
-#     txt_file = path.replace("images", "labels") + '/' + files[i].replace(".jpg",".json")
+#     txt_file = path.replace("images", "labels") + '/' + files[i].replace(".jpg",".txt")
 #     if os.path.exists(txt_file):
-#         new_txt_file = path.replace("images", "labels_val") + '/' + files[i].replace(".jpg",".json")
+#         new_txt_file = path.replace("images", "labels_val") + '/' + files[i].replace(".jpg",".txt")
 #         shutil.move(txt_file, new_txt_file)
 #         # shutil.copy(txt_file, new_txt_file)
 
-#         # xml_file = path.replace("JPEGImages", "Annotations") + '/' + files[i].replace(".jpg",".xml")
-#         # if os.path.exists(xml_file):
-#         #     new_xml_file = path.replace("JPEGImages", "Annotations_val") + '/' + files[i].replace(".jpg",".xml")
-#         #     shutil.move(xml_file, new_xml_file)
-#         #     # shutil.copy(xml_file, new_xml_file)
+#     # xml_file = path.replace("images", "Annotations") + '/' + files[i].replace(".jpg",".xml")
+#     # if os.path.exists(xml_file):
+#     #     new_xml_file = path.replace("images", "Annotations_val") + '/' + files[i].replace(".jpg",".xml")
+#     #     shutil.move(xml_file, new_xml_file)
+#     #     # shutil.copy(xml_file, new_xml_file)
 
 #     #   shutil.copy(file_path, new_file_path)
 #     #   shutil.move(file_path, new_file_path)
@@ -239,14 +250,14 @@ import cv2
 #################################################  7. 按图片取对应标签  ####################################################################
   
 
-# imgs_path = '/home/os/window_share/common3/dataset/hook/20210607hook/2021-6-10/lin/JPEGImages'
-# xml_path = '/home/os/window_share/common3/dataset/hook/20210607hook/2021-6-10/lin/Annotations'
-# labels_path = '/home/os/window_share/common3/dataset/hook/20210607hook/2021-6-10/lin/labels'
+# imgs_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/img_out'
+# # xml_path = '/home/os/window_share/common3/dataset/hook/20210607hook/2021-6-10/lin/Annotations'
+# labels_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/labels'
 
-# new_label_path = '/home/os/window_share/common3/dataset/hook/20210607hook/new_labels'
+# new_label_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/new_labels'
 # os.makedirs(new_label_path, exist_ok=True)
-# new_xml_path = '/home/os/window_share/common3/dataset/hook/20210607hook/new_xml'
-# os.makedirs(new_xml_path, exist_ok=True)
+# # new_xml_path = '/home/os/window_share/common3/dataset/hook/20210607hook/new_xml'
+# # os.makedirs(new_xml_path, exist_ok=True)
 
 # # 按非空标签保存对应标签和图片
 # # dirs_list = os.listdir( imgs_path )
@@ -255,16 +266,16 @@ import cv2
 #     for str0 in files:
 #     #   if str0.endswith(".jpg"):
 #           # find_file = imgs_path + '/' + str0.replace(".jpg", ".txt").replace(".JPG", ".txt")
-#           find_labels_file = str0.replace(".png", ".txt")
+#           find_labels_file = str0.replace(".jpg", ".txt")
 #           # if os.path.exists(find_file):
 #           print(str0)
 #           new_labels_file = new_label_path + '/' + find_labels_file
 #           shutil.copy(labels_path + '/' + find_labels_file,  new_labels_file)
 
-#           find_xml_file = str0.replace(".png", ".xml")
-#           # if os.path.exists(find_file):
-#           new_labels_file = new_xml_path + '/' + find_xml_file
-#           shutil.copy(xml_path + '/' + find_xml_file,  new_labels_file)
+#         #   find_xml_file = str0.replace(".png", ".xml")
+#         #   # if os.path.exists(find_file):
+#         #   new_labels_file = new_xml_path + '/' + find_xml_file
+#         #   shutil.copy(xml_path + '/' + find_xml_file,  new_labels_file)
 
 
 
@@ -513,9 +524,9 @@ import cv2
 
           
 # # ################################################# 15.  根据标签截取保存图片  ####################################################################
-# img_path = '/home/os/window_share/common2/dataset/ele_cap/20210826enjie/JPEGImages/'
-# labels_path = '/home/os/window_share/common2/dataset/ele_cap/20210826enjie/labels'
-# save_path = '/home/os/window_share/common2/dataset/ele_cap/20210826enjie/'
+# img_path = '/home/os/window_share/common3/dataset/car_window/car_window20220415/images'
+# labels_path = '/home/os/window_share/common3/dataset/car_window/car_window20220415/labels_4cls'
+# save_path = '/home/os/window_share/common3/dataset/car_window/car_window20220415/2cls'
 # os.makedirs(save_path, exist_ok=True)
 
 
@@ -545,26 +556,31 @@ import cv2
 #                 bot_y = center_y + (bbox_height / 2)
 
 #                 img_cut = image[max(0, int(top_y)): int(bot_y), max(0, int(top_x)) : int(bot_x)]
+#                 h1, w1, _ = img_cut.shape
+#                 # print("----------------------------> {}--->{}".format(h1, w1))
+#                 if not h1 or not w1:
+#                     continue
+
 #                 if content_list[0] == '0':
-#                     head_path = os.path.join(save_path, "person")   
+#                     head_path = os.path.join(save_path, "car")   
 #                     os.makedirs(head_path, exist_ok=True)
 #                     save_head = head_path +'/' + str0.split('.')[0] +"_" + str(number) +".jpg"               
 #                     cv2.imwrite(save_head,img_cut ) 
 #                     number += 1
-#                 elif content_list[0] == '1':
-#                     head_path = os.path.join(save_path, "ele_cap")   
+#                 elif content_list[0] == '1' :
+#                     head_path = os.path.join(save_path, "window_close")   
 #                     os.makedirs(head_path, exist_ok=True)
 #                     save_head = head_path +'/' + str0.split('.')[0] +"_" + str(number) +".jpg"               
 #                     cv2.imwrite(save_head,img_cut ) 
 #                     number += 1
-#                 elif content_list[0] == '2':
-#                     head_path = os.path.join(save_path, "protection_shoes")   
+#                 elif content_list[0] == '2' :
+#                     head_path = os.path.join(save_path, "window_open")   
 #                     os.makedirs(head_path, exist_ok=True)
 #                     save_head = head_path +'/' + str0.split('.')[0] +"_" + str(number) +".jpg"               
 #                     cv2.imwrite(save_head,img_cut ) 
 #                     number += 1
 #                 elif content_list[0] == '3':
-#                     head_path = os.path.join(save_path, "shoes")   
+#                     head_path = os.path.join(save_path, "door")   
 #                     os.makedirs(head_path, exist_ok=True)
 #                     save_head = head_path +'/' + str0.split('.')[0] +"_" + str(number) +".jpg"               
 #                     cv2.imwrite(save_head,img_cut ) 
@@ -575,8 +591,8 @@ import cv2
 
 # ################################################# 16.  更改每个标签类别  ####################################################################
   
-# labels_path = '/home/window_share/home/os/window_share/common3/dataset/vehicle/muye_20210324/Four/labels/'
-# save_path = '/home/window_share/home/os/window_share/common3/dataset/vehicle/muye_20210324/Four/coco/labels'
+# labels_path = '/home/os/window_share/common3/dataset/car_window/car_window20220415/labels'
+# save_path = '/home/os/window_share/common3/dataset/car_window/car_window20220415/labels_new'
 # os.makedirs(save_path, exist_ok=True)
 
 
@@ -603,14 +619,15 @@ import cv2
 #                         split_data[i] = split_data[i].replace('\t', ' ')
 #                     a = split_data[i].split(' ')
 
-#                     if a[1] == '0' or a[2] == '0' or a[3] == '0' or a[4] == '0':
-#                         new_data =''
-#                         print("-----0 lbels----------------{}----------------------".format(str0))
-#                     if a[0] == '6' or a[0] == '7' or a[0] == '8':
+#                     # if a[1] == '0' or a[2] == '0' or a[3] == '0' or a[4] == '0':
+#                     #     new_data =''
+#                     #     print("-----0 lbels----------------{}----------------------".format(str0))
+#                     if a[0] == '1' or a[0] == '2' :
+#                         new_data = '1' + ' ' + a[1] + ' ' + a[2] +\
+#                                     ' ' + a[3] + ' ' + a[4] + '\n'
+#                     elif a[0] == '3':
 #                         new_data = '2' + ' ' + a[1] + ' ' + a[2] +\
 #                                     ' ' + a[3] + ' ' + a[4] + '\n'
-#                     elif a[0] == '4' or a[0] == '5':
-#                         new_data =''
 #                     else:
 #                         new_data = a[0] + ' ' + a[1] + ' ' + a[2] +\
 #                                     ' ' + a[3] + ' ' + a[4] + '\n'
@@ -621,9 +638,9 @@ import cv2
 
 # ################################################# 17.  根据标签取图片 ####################################################################
   
-# save_labels_path = '/home/os/window_share/common3/dataset/hook/20210607hook/2021-6-10/liu/labels'
-# img_path = '/home/os/window_share/common3/dataset/hook/20210607hook/2021-6-10/liu/JPEGImages'
-# save_images_path = '/home/os/window_share/common3/dataset/hook/20210607hook/2021-6-10/liu/new_images'
+# save_labels_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/labels'
+# img_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/images'
+# save_images_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/new_images'
 # os.makedirs(save_images_path, exist_ok=True)
 
 
@@ -631,8 +648,8 @@ import cv2
 # for root,dirs,files in os.walk(save_labels_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
 #     for str0 in files:
 #         print(str0)
-#         img_path1 = save_labels_path.replace("labels", "JPEGImages") + '/' + str0.replace('.txt', '.png')
-#         save_labels_path1 = save_images_path + '/'  +  str0.replace('.txt', '.png')
+#         img_path1 = save_labels_path.replace("labels", "images") + '/' + str0.replace('.txt', '.jpg')
+#         save_labels_path1 = save_images_path + '/'  +  str0.replace('.txt', '.jpg')
 #         print(save_labels_path1)
 #         shutil.copy(img_path1, save_labels_path1)
 # print("------------------------------------------------done!")
@@ -780,3 +797,291 @@ import cv2
 #                   print(new_data)
 #                   f_new.write(new_data)
 #               f_new.close()
+
+
+################################################ 21. dbnet标签按比例划分训练集合验证集  ####################################################################
+# train_txt = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/20220505container_xhzz_train.txt'
+# val_txt = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/20220505container_xhzz_val.txt'
+# dir_txt = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/annotations.txt'
+# img_dir = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/Images/'
+# train_img = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/images_train/'
+# os.makedirs(train_img, exist_ok=True)
+# val_img = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/images_val/'
+# os.makedirs(val_img, exist_ok=True)
+
+
+# with open(dir_txt, "r") as f:
+#     with open(train_txt, "a") as tf:
+#         with open(val_txt, "a") as vf:
+#             if f.readlines():
+#                 f.seek(0)
+#                 all_data = f.read().split('\n')
+#                 count = 0
+#                 for line in all_data:
+#                     img_path = img_dir + line.split('\t')[0].split('/')[1]  
+#                     print(img_path)
+#                     if count % 5 != 0:
+#                         train_imgPath = img_path.replace("/Images/", "/images_train/" )
+#                         shutil.copy(img_path, train_imgPath)
+#                         tf.write(line + '\n')
+#                     else:
+#                         val_imgPath = img_path.replace("/Images/", "/images_val/")
+#                         shutil.copy(img_path, val_imgPath)
+#                         vf.write(line + '\n')
+#                     print("----------->count : ", count)
+#                     count += 1
+#                     # print(transcription)
+# f.close()
+# tf.close()
+# vf.close()
+
+
+################################################ 22. 按比例取数据集（三级文件夹）  ####################################################################
+# path = '/home/os/window_share/common3/dataset/ocr/cimc/20220419container_taicang/images'
+# outpath = '/home/os/window_share/common3/dataset/ocr/cimc/20220419container_taicang/20220419container_taicang'
+# os.makedirs(outpath, exist_ok=True)
+
+# # 按顺序间隔n帧读取图片保存图片
+# dirs_list = os.listdir( path )
+# # dirs_list.sort()
+# for root,dirs,files in os.walk(path): # root 为当前正在遍历文件夹地址，dirs为该文件夹目录名字，files为该文件夹所有的文件
+# #   files.sort(key=lambda x:x[:-4])                        #.jpg -> -4
+#     for dir in dirs:
+#         print(dir)
+#         # output_path = outpath + "/" + dir +'_choice'
+#         # os.makedirs(output_path, exist_ok=True)
+#         folder = os.path.join(root, dir)
+#         files = os.listdir(folder)
+#         for i in range(0,len(files)):
+#             if files[i][-3:] == 'jpg' : # or files[i][-3:] == 'JPG':
+#                 # print(i)
+#                 num = files[i].split(".")[0].split("_")[-1]
+#                 if int(num) % 2 == 0:
+#                     print(i)
+#                     file_path =os.path.join(path, dir)  + '/' + files[i]
+#                     # new_file_path = output_path + '/' + files[i]
+#                     new_file_path = outpath + '/' + files[i]
+#                     shutil.copy(file_path, new_file_path)
+#                 # shutil.move(file_path, new_file_path)
+
+
+################################################ 23. 按比例取数据集(单文件)  ####################################################################
+# path = '/home/os/window_share/common3/dataset/car_window/car_window20220415/2cls/window_close'
+# outpath = '/home/os/window_share/common3/dataset/car_window/car_window20220415/2cls/window_close_val'
+# os.makedirs(outpath, exist_ok=True)
+
+
+# files = os.listdir(path)
+# for i in range(0,len(files)):
+#     if files[i][-3:] == 'jpg' : # or files[i][-3:] == 'JPG':
+#         # print(i)
+#         num = files[i].split(".")[0].split("_")[-1]
+#         if int(num) % 100 == 0:
+#             print(i)
+#             file_path =path + '/' + files[i]
+#             # new_file_path = output_path + '/' + files[i]
+#             new_file_path = outpath + '/' + files[i]
+#             shutil.copy(file_path, new_file_path)
+#         # shutil.move(file_path, new_file_path)
+
+
+################################################ 24. 按比例取数据集(单文件-分类)  ####################################################################
+# path = '/home/os/window_share/common3/dataset/car_window/car_window20220415/2cls/window_close'
+# outpath = '/home/os/window_share/common3/dataset/car_window/car_window20220415/2cls/window_close_val'
+# os.makedirs(outpath, exist_ok=True)
+
+
+
+# # 按顺序间隔n帧读取图片保存图片
+# dirs_list = os.listdir( path )
+# # dirs_list.sort()
+# for root,dirs,files in os.walk(path): # root 为当前正在遍历文件夹地址，dirs为该文件夹目录名字，files为该文件夹所有的文件
+# #   files.sort(key=lambda x:int(x[:-4]))                        #.jpg -> -4
+#   files.sort(key=lambda x:x[:-4])                        #.jpg -> -4
+#   for i in range(0,len(files), 4):
+#     if files[i][-3:] == 'jpg' : # or files[i][-3:] == 'JPG':
+#       print(i)
+#       file_path = path + '/' + files[i]
+#       new_file_path = outpath + '/' + files[i]
+#     #   shutil.copy(file_path, new_file_path)
+#       shutil.move(file_path, new_file_path)
+
+
+############################################### 25. 按比例划分数据集和验证集(json Dbnet)  ####################################################################
+# path = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/images/'
+# output_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/images_val'
+# xml_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/Annotations_val'
+# os.makedirs(output_path, exist_ok=True)
+# os.makedirs(xml_path, exist_ok=True)
+
+
+# # 按顺序间隔n帧读取图片保存图片
+# dirs_list = os.listdir( path )
+# # dirs_list.sort()
+# for root,dirs,files in os.walk(path): # root 为当前正在遍历文件夹地址，dirs为该文件夹目录名字，files为该文件夹所有的文件
+# #   files.sort(key=lambda x:int(x[:-4]))                        #.jpg -> -4
+#   files.sort(key=lambda x:x[:-4])                        #.jpg -> -4
+#   for i in range(0,len(files), 4):
+#     if files[i][-3:] == 'jpg' : # or files[i][-3:] == 'JPG':
+#       print(i)
+#       file_path = path + '/' + files[i]
+#       new_file_path = output_path + '/' + files[i]
+#     #   shutil.copy(file_path, new_file_path)
+#       shutil.move(file_path, new_file_path)
+
+
+#     xml_file = path.replace("images", "Annotations") + '/' + files[i].replace(".jpg",".json")
+#     if os.path.exists(xml_file):
+#         new_xml_file = path.replace("images", "Annotations_val") + '/' + files[i].replace(".jpg",".json")
+#         shutil.move(xml_file, new_xml_file)
+#         # shutil.copy(xml_file, new_xml_file)
+
+
+# ############################################## 26. 倒立图像转正  ################################################
+# from PIL import Image
+# path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/daoli'
+# new_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/daoli_out'
+# os.makedirs(new_path, exist_ok=True)
+
+# dirs_list = os.listdir( path )
+# dirs_list.sort()
+# for root,dirs,files in os.walk(path): #提取文件夹下所有jpg文件复制转移到新的文件夹
+# #   files.sort(key=lambda x:int(x[:-4]))
+# # for root,dirs,files in dirs_list: #提取文件夹下所有jpg文件复制转移到新的文件夹
+#   # video_name = root.split('/')[6]
+#   for i in range(len(files)):
+#     # if files[i][-3:] == 'jpg' or files[i][-3:] == 'JPG':
+#         print(i)
+#         file_path = root + '/' + files[i]
+#     #   img = cv2.imread(file_path)
+#     #   img_new = cv2.flip(img, 0)
+#         im = Image.open(file_path)
+#         #进行上下颠倒
+#         out = im.transpose(Image.ROTATE_180)
+#         new_file_path = new_path + '/' + files[i]
+#         # cv2.imwrite(new_file_path, img_new)
+#         out.save(new_file_path)
+
+
+
+################################################  27. 按图片保留取对应标签列表  ####################################################################
+
+# imgs_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220419container_taicang/20220419con_word_train'
+# dir_txt = '/home/os/window_share/common3/dataset/ocr/cimc/20220419container_taicang/20220419con_word_train.txt'
+# labels_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220419container_taicang/20220419con_word_train_new.txt'
+
+
+
+# with open(dir_txt, "r") as f:
+#     if f.readlines():
+#         f.seek(0)
+#         all_data = f.read().split('\n')
+#         for line in all_data:
+#             imgs = line.split('\t')[0].split('/')[1]
+#             if os.path.exists(imgs_path + '/' + imgs):
+#                 with open(labels_path, 'a') as fs:
+#                     fs.writelines(line + "\n")
+#                 # print(line)
+#             else:
+#                 print("-----------------------> {}".format(line))
+
+
+# # ############################################## 28. 裁剪图片  ################################################
+# path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/cut'
+# new_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/cut_out'
+# os.makedirs(new_path, exist_ok=True)
+
+# # 按顺序间隔n帧读取图片保存图片
+# dirs_list = os.listdir( path )
+# dirs_list.sort()
+# for root,dirs,files in os.walk(path): #提取文件夹下所有jpg文件复制转移到新的文件夹
+# #   files.sort(key=lambda x:int(x[:-4]))
+# # for root,dirs,files in dirs_list: #提取文件夹下所有jpg文件复制转移到新的文件夹
+#   # video_name = root.split('/')[6]
+#   for i in range(0,len(files)):
+#       print(i)
+#       file_path = root + '/' + files[i]
+#       # new_file_path = new_path + '/' + video_name + '_'+ files[i]
+#       img = cv2.imread(file_path)[0:1237, 831:1560]
+#       new_file_path = new_path + '/' + files[i]
+#       cv2.imwrite(new_file_path, img)
+#     #   shutil.move(file_path,new_file_path)
+
+
+# ################################################# 29.  取文件夹中非空标签和图片（集团检测图像标注）  ####################################################################
+  
+# labels_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/labels'
+# img_org = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/images'
+# save_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/labels_new'
+# os.makedirs(save_path, exist_ok=True)
+# img_save = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/img_new'
+# os.makedirs(img_save, exist_ok=True)
+
+
+# # 按非空标签保存对应标签和图片
+# dirs_list = os.listdir( labels_path )
+# for dir in dirs_list:
+#     dir = os.path.join( labels_path, dir)
+#     for root,dirs,files in os.walk(dir): #提取文件夹下所有jpg文件复制转移到新的文件夹
+#         # str1 = str(files)
+#         for str0 in files:
+#             with open(root + '/' + str0, "r") as f:
+#                 label_path = root + '/'  + str0
+#                 print("------------> {}".format(str0))
+#                 if f.readlines(): 
+#                     new_label_path = save_path + '/' +str0.split('.')[0].split('.')[0] + ".txt"
+#                     imgs_org = img_org + '/' + str0.split('.')[0].split('.')[0] + ".jpg"
+#                     imgs_save = img_save + '/' + str0.split('.')[0].split('.')[0] + ".jpg"
+#                     shutil.copy(imgs_org, imgs_save)
+#                     shutil.copy(label_path, new_label_path)
+
+
+# ################################################# 30.  根据标签画图  ####################################################################
+# # color=(128, 128, 128)
+# def plot_one_box(x, im, color=(0, 0, 255), label=None, line_thickness=3):
+#     # Plots one bounding box on image 'im' using OpenCV
+#     assert im.data.contiguous, 'Image not contiguous. Apply np.ascontiguousarray(im) to plot_on_box() input image.'
+#     tl = line_thickness or round(0.002 * (im.shape[0] + im.shape[1]) / 2) + 1  # line/font thickness
+#     c1, c2 = (int(x[0]), int(x[1])), (int(x[2]), int(x[3]))
+#     cv2.rectangle(im, c1, c2, color, thickness=tl, lineType=cv2.LINE_AA)
+#     if label:
+#         tf = max(tl - 1, 1)  # font thickness
+#         t_size = cv2.getTextSize(label, 0, fontScale=tl / 3, thickness=tf)[0]
+#         c2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
+#         cv2.rectangle(im, c1, c2, color, -1, cv2.LINE_AA)  # filled
+#         cv2.putText(im, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
+                                                                           
+# img_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/images'
+# labels_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/labels'
+# save_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419/img_out'
+# os.makedirs(save_path, exist_ok=True)
+
+# # 按非空标签保存对应标签和图片
+# for root,dirs,files in os.walk(img_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
+#     for str0 in files:
+#         print(str0)
+#         with open(labels_path + '/' + str0.replace(".jpg", ".txt"), "r") as f:
+#             img_read_path = os.path.join(img_path, str0)
+#             image = cv2.imread(img_read_path)
+#             h,w,_ = image.shape
+#             for content in f:
+#                 if "\t" in content:
+#                     content = content.replace("\t"," ")
+#                 content_list = content.split(" ")
+#                 # yolo normal(xywh) -> xyxy
+#                 cls = content_list[0]
+#                 bbox_width = float(content_list[3]) * w
+#                 bbox_height = float(content_list[4]) * h
+#                 center_x = float(content_list[1]) * w
+#                 center_y = float(content_list[2]) * h
+#                 top_x = center_x - (bbox_width / 2)
+#                 top_y = center_y - (bbox_height / 2)
+#                 bot_x = center_x + (bbox_width / 2)
+#                 bot_y = center_y + (bbox_height / 2)
+                
+#                 xyxy = (top_x, top_y, bot_x, bot_y)
+#                 plot_one_box(xyxy, image, label=cls, line_thickness=3)
+#         save_file = save_path + '/' + str0
+#         cv2.imwrite(save_file, image)
+
+ 

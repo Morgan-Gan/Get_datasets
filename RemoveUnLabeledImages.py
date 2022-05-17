@@ -29,7 +29,7 @@ class BatchRename():
         for item in imagesNames:
             #如果图片，没有被标注
             if(item not in lablesNames):
-                fileName = item + '.png'
+                fileName = item + '.jpg'
                 notlabelFile = os.path.join(os.path.abspath(self.imagesPath), fileName)
                 #print(os.path.exists(notlabelFile))
                 try:

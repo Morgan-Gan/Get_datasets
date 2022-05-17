@@ -5,17 +5,24 @@ import cv2
 
 # Declare an augmentation pipeline
 transform = A.OneOf([
+    
+    A.RandomBrightness(limit=0.2, always_apply=False, p=0.5),
+    A.Blur(blur_limit=7, always_apply=False, p=0.5),
+    A.MedianBlur(blur_limit=7, always_apply=False, p=0.5),
+    # 图像中值滤波。中心模糊
     A.HorizontalFlip(p=0.5),
-    A.Affine(scale=(0.8, 1.0)),
-    A.ShiftScaleRotate(shift_limit=0.0625, scale_limit=0.2, rotate_limit=45, p=0.2),
+    A.MotionBlur(blur_limit=7, always_apply=False, p=0.5),
+    # 给图像加上运动模糊。运动模糊是景物图象中的移动效果。它比较明显地出现在长时间暴光或场景内的物体快速移动的情形里。
+    # A.Affine(scale=(0.9, 1.0)),                             #A.Affine(scale=(0.8, 1.0)),
+    # A.ShiftScaleRotate(shift_limit=0.0625, scale_limit=0.2, rotate_limit=5, p=0.2),   #rotate_limit=45,
     # A.VerticalFlip(p=0.5),
-    # A.HueSaturationValue(hue_shift_limit=20, sat_shift_limit=30, val_shift_limit=20, always_apply=False, p=0.5),
-    # A.OpticalDistortion(distort_limit=0.05, shift_limit=0.05, interpolation=1, border_mode=4, value=None, mask_value=None, always_apply=False, p=0.5),
-    # A.GaussNoise(var_limit=(10.0, 50.0), always_apply=False, p=0.5),
+    # A.HueSaturationValue(hue_shift_limit=20, sat_shift_limit=30, val_shift_limit=20, always_apply=False, p=0.3),
+    A.OpticalDistortion(distort_limit=0.05, shift_limit=0.05, interpolation=1, border_mode=4, value=None, mask_value=None, always_apply=False, p=0.5),
+    A.GaussNoise(var_limit=(10.0, 50.0), always_apply=False, p=0.2),
 ],p=0.5)
 
 
-image_path = "val/0head"
+image_path = "/home/os/window_share/common3/dataset/escalator/cimc_escalator20220408/2cls/escalator"     #"val/0head"
 
 image_list = os.listdir(image_path)
 for image_file in image_list:
@@ -30,7 +37,7 @@ for image_file in image_list:
 
     # cv2.imwrite(output_path, image)
 
-    for i in range(3):
+    for i in range(3):  #(3)
         # Augment an image
         transformed = transform(image=image)
         transformed_image = transformed["image"]

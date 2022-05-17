@@ -121,11 +121,11 @@ def get_rotate_crop_image(img, points, path_json):
     return dst_img
 
 
-
-dir_json = '/home/os/window_share/common3/dataset/ocr/cimc/20211201containers/labels_val/'
-dir_txt = '/home/os/window_share/common3/dataset/ocr/cimc/20211201containers/'
-img_dir = '/home/os/window_share/common3/dataset/ocr/cimc/20211201containers/20211201containers_val/'
-crop_img_dir = '/home/os/window_share/common3/dataset/ocr/cimc/20211201containers/images_val_output/'
+                                                                              
+dir_json = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/Annotations_val/'
+dir_txt = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/'
+img_dir = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/20220312containers_val/'
+crop_img_dir = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/images_val_output/'
 
 if not os.path.exists(dir_txt) :
     os.makedirs(dir_txt)

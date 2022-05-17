@@ -31,27 +31,30 @@ def parse_page(html, count, word):
             print(i['pic_url'])
             count = count + 1
             # 数据保存
-            with open(word + '/' + word + '_url_lieperson.txt', 'a', encoding='utf-8') as f:  #搜狗
+            with open(word + '/' + word + '_url_backperson.txt', 'a', encoding='utf-8') as f:  #搜狗
                 f.write(i['pic_url'] + '\n')
+            name = i['pic_url'].split('/')[-1].split('.')[0] + '.jpg'
             pic = get_page(i['pic_url'])
             if pic:
-                with open(word + '/' + 'lieperson_'+str(count) + '.jpg', 'wb') as f:   # 搜狗
+                # with open(word + '/' + 'backperson_'+str(count) + '.jpg', 'wb') as f:   # 搜狗
+                with open(word + '/' + name, 'wb') as f:   # 搜狗
                     f.write(pic.content)
+                    
             time.sleep(1)
  
         return count
  
  
 if __name__ == '__main__':
-    word = '躺着的人'  # 关键词
-    page = 10  # 爬取的页数
+    word = '趴着躺在室内的人'  # 关键词
+    page = 100  # 爬取的页数   #10
     count = 0  #图片计数
  
     if not os.path.exists(word):
         os.makedirs(word)  # 建目录
  
     for i in range(page):
-        url =  'https://pic.sogou.com/pics?query={}&mode=1&start={}&reqType=ajax&reqFrom=result&tn=0'.format(word,i*48)
+        url =  'https://pic.sogou.com/pics?query={}&mode=1&start={}&reqType=ajax&reqFrom=result&tn=0'.format(word,i*100)  #48
         # 发送请求、获取响应
         html = get_page(url)
         # 解析响应 数据存储
