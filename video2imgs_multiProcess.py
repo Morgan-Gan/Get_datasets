@@ -2,6 +2,15 @@ import cv2
 import os
 import shutil
 
+import sys
+import subprocess
+
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(__dir__)
+sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
 # def save_img():
 #     video_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220419container_taicang/video/4'
@@ -44,8 +53,8 @@ import shutil
 ###########################################  间隔帧保存视频，并合并到一个文件夹中##############################################
 
 def main():
-    video_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/video'
-    images_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/images'
+    video_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/test'
+    images_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/images_test'
     # video_path = '/home/os/window_share/common3/dataset/sunroof/video/sunroof20220419_video'
     # images_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419'
     os.makedirs(images_path, exist_ok=True)
@@ -81,8 +90,24 @@ def main():
         print(images_path)
 
 
-main()
+# save_img()
 
+if __name__ == "__main__":
+    # args = utility.parse_args()
+    if True:
+        p_list = []
+        total_process_num = 2
+        for process_id in range(total_process_num):
+            cmd = [sys.executable, "-u"] + sys.argv + [
+                "--process_id={}".format(process_id),
+                "--use_mp={}".format(False)
+            ]
+            p = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stdout)
+            p_list.append(p)
+        for p in p_list:
+            p.wait()
+    # else:
+    #     main(args)
 
 
 ###########################################3.1  合成视频##############################################

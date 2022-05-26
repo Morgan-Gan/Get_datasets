@@ -8,7 +8,6 @@ import cv2
 1. 按顺序间隔n帧读取图片保存图片
 2.  按非空标签保存对应标签和图片
 3. 按比例划分数据集和验证集
-4. 删除无标签对应的图片
 5. 记录删除越界标签对应的图片
 6. 更改文件夹中文件的名字,并合并到一个文件夹
 7. 按图片取对应标签
@@ -29,12 +28,19 @@ import cv2
 22. 按比例取数据集（三级文件夹）
 23. 按比例取数据集（单文件夹）
 24. 按比例取数据集(单文件-分类)
-25. 按比例划分数据集和验证集(json Dbnet)
 26. 图像倒立转正
 27. 按图片保留取对应标签列表 
 28. 裁剪图片 
 29.  取文件夹中非空标签和图片（集团检测图像标注）
 30.  根据标签画图  
+
+Ocr预处理：
+4. 删除无标签对应的图片
+25. 按比例划分数据集和验证集(json Dbnet)
+数据转化：
+labelme2txt.py
+labelme2cut.py
+
 '''
 # ############################################## 1. 按顺序间隔n帧读取图片保存图片  ################################################
 # path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/20220505container_xhzz'
@@ -135,27 +141,6 @@ import cv2
 
 #     #   shutil.copy(file_path, new_file_path)
 #     #   shutil.move(file_path, new_file_path)
-
-
-#################################################  4. 删除无标签对应的图片  ####################################################################
-  
-
-# imgs_path  = '/home/os/window_share/common3/dataset/ocr/cimc/20211201containers/images'
-# labels_path = '/home/os/window_share/common3/dataset/ocr/cimc/20211201containers/labels'
-# new_file_path =  '/home/os/window_share/common3/dataset/ocr/cimc/20211201containers/new_images'
-# os.makedirs(new_file_path, exist_ok=True)
-
-
-# # 按非空标签保存对应标签和图片
-# dirs_list = os.listdir( imgs_path )
-# for root,dirs,files in os.walk(imgs_path): #提取文件夹下所有jpg文件复制转移到新的文件夹
-#     # str1 = str(files)
-#     for str0 in files:
-#       find_file = labels_path + '/' + str0.replace(".jpg", ".json")           #.replace(".JPG", ".txt")
-#       if not os.path.exists(find_file):
-#          print(imgs_path+ '/' + str0)
-#          shutil.move(imgs_path + '/' + str0, new_file_path+ '/' + str0)
-#         #  os.remove(imgs_path + '/' + str0 )
          
 
 
@@ -907,40 +892,10 @@ import cv2
 #       shutil.move(file_path, new_file_path)
 
 
-############################################### 25. 按比例划分数据集和验证集(json Dbnet)  ####################################################################
-# path = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/images/'
-# output_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/images_val'
-# xml_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/Annotations_val'
-# os.makedirs(output_path, exist_ok=True)
-# os.makedirs(xml_path, exist_ok=True)
-
-
-# # 按顺序间隔n帧读取图片保存图片
-# dirs_list = os.listdir( path )
-# # dirs_list.sort()
-# for root,dirs,files in os.walk(path): # root 为当前正在遍历文件夹地址，dirs为该文件夹目录名字，files为该文件夹所有的文件
-# #   files.sort(key=lambda x:int(x[:-4]))                        #.jpg -> -4
-#   files.sort(key=lambda x:x[:-4])                        #.jpg -> -4
-#   for i in range(0,len(files), 4):
-#     if files[i][-3:] == 'jpg' : # or files[i][-3:] == 'JPG':
-#       print(i)
-#       file_path = path + '/' + files[i]
-#       new_file_path = output_path + '/' + files[i]
-#     #   shutil.copy(file_path, new_file_path)
-#       shutil.move(file_path, new_file_path)
-
-
-#     xml_file = path.replace("images", "Annotations") + '/' + files[i].replace(".jpg",".json")
-#     if os.path.exists(xml_file):
-#         new_xml_file = path.replace("images", "Annotations_val") + '/' + files[i].replace(".jpg",".json")
-#         shutil.move(xml_file, new_xml_file)
-#         # shutil.copy(xml_file, new_xml_file)
-
-
-# ############################################## 26. 倒立图像转正  ################################################
+# ############################################## 26. 图像倒立转正  ################################################
 # from PIL import Image
-# path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/daoli'
-# new_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220505container/daoli_out'
+# path = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/flip'
+# new_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/flip'
 # os.makedirs(new_path, exist_ok=True)
 
 # dirs_list = os.listdir( path )

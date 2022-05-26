@@ -17,11 +17,11 @@ def json2txt(path_json,path_txt):
                 strxy+=label                                            
                 ftxt.writelines(strxy+"\n")  
 
-def json2cut(path_json, img_path, crop_img_dir):
+def json2cut(path_json, img_path, crop_img_dir, txt_name):
     img = cv2.imread(img_path)
     with open(path_json,'r') as path_json:
         jsonx=json.load(path_json)
-        path_txt = dir_txt + 'rec_gt_val.txt'
+        path_txt = dir_txt + txt_name
         with open(path_txt,'a') as ftxt:
             count = 0
             for shape in jsonx['shapes']:           
@@ -52,7 +52,7 @@ def json2cut(path_json, img_path, crop_img_dir):
                 # for m,n in xy:
                 #     strxy+=str(m)+','+str(n)+','
                 # strxy+=label 
-                label_str = 'train/' + crop_img_name + '	' + label                                            
+                label_str = txt_name + '/' + crop_img_name + '	' + label                                            
                 ftxt.writelines(label_str+"\n") 
 
                 new_plot_img = img_path.replace("/images/", "/images_plot/")
@@ -122,10 +122,11 @@ def get_rotate_crop_image(img, points, path_json):
 
 
                                                                               
-dir_json = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/Annotations_val/'
-dir_txt = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/'
-img_dir = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/20220312containers_val/'
-crop_img_dir = '/home/os/window_share/common3/dataset/ocr/cimc/20220312containers/images_val_output/'
+dir_json = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/Annotations_train/'
+dir_txt = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/'
+img_dir = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/det/20220519container_tianjin_open_train/'
+crop_img_dir = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/20220519con_owrd_tianjin_train/'
+txt_name = '20220519con_owrd_tianjin_train.txt'
 
 if not os.path.exists(dir_txt) :
     os.makedirs(dir_txt)
@@ -134,14 +135,14 @@ if not os.path.exists(crop_img_dir) :
 
 list_json = os.listdir(dir_json)
 for cnt,json_name in enumerate(list_json):
-    # print('cnt=%d,name=%s'%(cnt,json_name))
+    print('cnt=%d,name=%s'%(cnt,json_name))
     path_json = dir_json + json_name
     # path_txt = dir_txt + json_name.replace('.json','.txt')
     # path_txt = dir_txt + 'img_test.txt'
     img_path = os.path.join(img_dir, json_name.replace('.json','.jpg'))
     #print(path_json,path_txt)    
     # json2txt(path_json,path_txt)
-    json2cut(path_json, img_path, crop_img_dir)
+    json2cut(path_json, img_path, crop_img_dir, txt_name)
 
 
 
