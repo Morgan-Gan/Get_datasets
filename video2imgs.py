@@ -44,8 +44,8 @@ import shutil
 ###########################################  间隔帧保存视频，并合并到一个文件夹中##############################################
 
 def main():
-    video_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/video'
-    images_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/images'
+    video_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220530con_qingdao/video'
+    images_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220530con_qingdao/images'
     # video_path = '/home/os/window_share/common3/dataset/sunroof/video/sunroof20220419_video'
     # images_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419'
     os.makedirs(images_path, exist_ok=True)
@@ -66,10 +66,10 @@ def main():
             if rval:
                 if(c % timeF == 0):
                     # frame[0:1080, 0:1500] # 裁剪坐标为[y0:y1, x0:x1]
-                    cropped = frame[193:1245, 37:2513]
+                    cropped = frame[80:620, 30:1262]
                     # cropped = cv2.resize(cropped, (1920, 1080))
-                    cv2.imwrite(images_path + '/' + file_name +
-                                'tainjing20220519_' + str(c) + '.jpg', cropped)   # 按文件夹命名
+                    img_name = images_path + '/' +  'qiangdao20220519_' + file_name + '_' + str(c) + '.jpg'
+                    cv2.imwrite(img_name, cropped)   # 按文件夹命名
                     # cv2.imwrite(images_path + '/' + str(c) +      # 按帧数命名
                     #             '.jpg', cropped)   # .png
                     cv2.waitKey(1)
