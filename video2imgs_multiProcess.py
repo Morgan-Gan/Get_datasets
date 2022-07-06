@@ -10,7 +10,7 @@ sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+# os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
 # def save_img():
 #     video_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220419container_taicang/video/4'
@@ -51,63 +51,60 @@ os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
 
 ###########################################  间隔帧保存视频，并合并到一个文件夹中##############################################
+# -*- coding: utf-8 -*-   
+import os 
+import cv2
+import csv
+import numpy as np
+import concurrent.futures
+ 
+def GetImgNameByEveryDir(file_dir,videoProperty):  
+    FileNameWithPath = [] 
+    FileName         = []
+    FileDir          = []
+    # videoProperty=['.png','jpg','bmp']
+    for root, dirs, files in os.walk(file_dir):  
+        for file in files:  
+            if os.path.splitext(file)[1] in videoProperty:  
+                FileNameWithPath.append(os.path.join(root, file))  # 保存图片路径
+                FileName.append(file)                              # 保存图片名称
+                FileDir.append(root[len(file_dir):])               # 保存图片所在文件夹
+    return FileName,FileNameWithPath,FileDir
+ 
+# 以视频文件名创建文件夹，然后保存图像到对应文件夹
+def AVI_To_Img_And_save(video_file):
+	video_name = video_file.split('/')[-1].split('.')[0]
+	print('当前处理的视频为：',video_file)
+	cap = cv2.VideoCapture(video_file)
+	rval = cap.isOpened()
+	framenum=0
+	while rval:
+		rval, frame  = cap.read()
+		if framenum%25!=0:
+			framenum+=1
+			continue
+		save_dir     = '/home/os/window_share/common3/dataset/car_window/car_window20220704/imgs_right/'
+		os.makedirs(save_dir, exist_ok=True)
+		Img_savename = save_dir + '/' + video_name + '_' + '%08d'%framenum +'.jpg'
+		if rval:
+			if os.path.exists(Img_savename)==False:
+				cv2.imwrite(Img_savename, frame,[int(cv2.IMWRITE_JPEG_QUALITY), 100]) 
+		else:
+			break
+		framenum+=1
+		print('正在处理视频{}的第{}帧,rval = {}...'.format(video_name,framenum,rval))
+	cap.release()
+	return ''
+	
+ 
+FileName,FileNameWithPath,FileDir = GetImgNameByEveryDir('/home/os/window_share/common3/dataset/car_window/car_window20220704/right/',['.wmv','.mkv','.mp4'])
+print('FileName = ',FileName)
 
-def main():
-    video_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/test'
-    images_path = '/home/os/window_share/common3/dataset/ocr/cimc/20220519container_tianjin_open/images_test'
-    # video_path = '/home/os/window_share/common3/dataset/sunroof/video/sunroof20220419_video'
-    # images_path = '/home/os/window_share/common3/dataset/sunroof/sunroof20220419'
-    os.makedirs(images_path, exist_ok=True)
-    videos = os.listdir(video_path)
-    for video_name in videos:
-        file_name = video_name.split('_')[-1]#.split('_')[2]
-        file_name = file_name.split('.')[0]
-        # + '/'          # + file_name
-        vc = cv2.VideoCapture(video_path+'/'+video_name)
-        c = 0
-        timeF = 10                                             # 视频帧计数间隔频率8
-        rval = vc.isOpened()
-
-        while rval:
-            c = c + 1                                              # 1
-            rval, frame = vc.read()
-            # pic_path = folder_name+'/'
-            if rval:
-                if(c % timeF == 0):
-                    # frame[0:1080, 0:1500] # 裁剪坐标为[y0:y1, x0:x1]
-                    cropped = frame[193:1245, 37:2513]
-                    # cropped = cv2.resize(cropped, (1920, 1080))
-                    cv2.imwrite(images_path + '/' + file_name +
-                                'tainjing20220519_' + str(c) + '.jpg', cropped)   # 按文件夹命名
-                    # cv2.imwrite(images_path + '/' + str(c) +      # 按帧数命名
-                    #             '.jpg', cropped)   # .png
-                    cv2.waitKey(1)
-                    print("It is saving {} fps".format(c))
-            else:
-                break
-        vc.release()
-        print('save_success')
-        print(images_path)
-
-
-# save_img()
-
-if __name__ == "__main__":
-    # args = utility.parse_args()
-    if True:
-        p_list = []
-        total_process_num = 2
-        for process_id in range(total_process_num):
-            cmd = [sys.executable, "-u"] + sys.argv + [
-                "--process_id={}".format(process_id),
-                "--use_mp={}".format(False)
-            ]
-            p = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stdout)
-            p_list.append(p)
-        for p in p_list:
-            p.wait()
-    # else:
-    #     main(args)
+# 同时运行线程最多20个，多的会等待
+with concurrent.futures.ThreadPoolExecutor(max_workers=20) as process:
+	process.map(AVI_To_Img_And_save,FileNameWithPath)
+ 
+ 
 
 
 ###########################################3.1  合成视频##############################################
